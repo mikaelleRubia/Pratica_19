@@ -1,5 +1,4 @@
 ## Instruções Praticas 19
-    Objetivos:
     
     Desenvolvimento de um controle de conjuntos de itens (strings) de 
     supermercados. É necessária a implementação de métodos para 
