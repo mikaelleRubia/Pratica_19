@@ -1,83 +1,94 @@
 #include <iostream>
-#include <vector>
 #include <unordered_set>
 
 using namespace std;
 
 class Conjunto {
 private:
-    int* elementos;
-    int tamanho;
+    unordered_set<int> elementos;
 
 public:
-    Conjunto(int* outroConjunto, int tam);
 
-    void imprimirElementos();
+    Conjunto();
 
-    static void operador_mais(int vet1[], int tam1, int vet2[], int tam2);
-    
-    static void operador_inter(int array1[], int tam1, int array2[], int tam2);
-};
+    Conjunto(const Conjunto& outro);
 
-Conjunto::Conjunto(int* outroConjunto, int tam) {
-    elementos = new int[tam];
-    tamanho = tam;
-    for(int i = 0; i < tam; ++i) {
-        elementos[i] = outroConjunto[i];
-    }
-}
 
-void Conjunto::imprimirElementos() {
-    for(int i = 0; i < tamanho; ++i) {
-        cout << elementos[i] << " ";
-    }
-    cout << endl;
-}
-
-void Conjunto::operador_mais(int vet1[], int tam1, int vet2[], int tam2) {
-    unordered_set<int> conjuntoUniao;
-    for (int i = 0; i < tam1; ++i) {
-        conjuntoUniao.insert(vet1[i]);
-    }
-
-    for (int i = 0; i < tam2; ++i) {
-        conjuntoUniao.insert(vet2[i]);
-    }
-
-    cout <<"---Uniao---" << endl;
-    for (const auto& i : conjuntoUniao) {
-        cout << i << " ";
-    }
-    cout << "\n\n";
-
-}
-
-void Conjunto::operador_inter(int array1[], int tam1, int array2[], int tam2) {
-    unordered_set<int> conjuntoArray1(array1, array1 + tam1);
-    cout <<"---Intersecao---" << endl;
-    for (int i = 0; i < tam2; ++i) {
-        if (conjuntoArray1.find(array2[i]) != conjuntoArray1.end()) {
-            cout << array2[i] << " ";
+    Conjunto& operator=(const Conjunto& outro) {
+        if (this != &outro) {
+            elementos = outro.elementos;
         }
+        return *this;
     }
-    cout << "\n\n";
+
+    Conjunto operator+(const Conjunto& outro) const {
+        Conjunto uniao = *this;
+        for (const auto& elemento : outro.elementos) {
+            uniao.elementos.insert(elemento);
+        }
+        return uniao;
+    }
+
+    Conjunto operator*(const Conjunto& outro) const {
+        Conjunto intersecao;
+        for (const auto& elemento : elementos) {
+            if (outro.elementos.count(elemento) > 0) {
+                intersecao.elementos.insert(elemento);
+            }
+        }
+        return intersecao;
+    }
+
+    void addElemento(int elemento) {
+        elementos.insert(elemento);
+    }
+
+
+    void imprimirElementos() const {
+        for (const auto& elemento : elementos) {
+            cout << elemento << " ";
+        }
+        cout << endl;
+    }
+};
+Conjunto::Conjunto(){}
+
+Conjunto::Conjunto(const Conjunto& outro){
+    elementos = outro.elementos;
 }
+
+
 
 int main() {
+    Conjunto A;
+    Conjunto B;
 
-    int conjuntoOriginal[] = {1, 2, 3, 4, 9,5};
-    int conjuntoB[] = {2, 1, 9, 4};
-    int tam1 = sizeof(conjuntoB) / sizeof(conjuntoB[0]);
-    int tam2 = sizeof(conjuntoOriginal) / sizeof(conjuntoOriginal[0]);
+    A.addElemento(5);
+    A.addElemento(3);
+    A.addElemento(2);
+    B.addElemento(3);
+    B.addElemento(1);
+    B.addElemento(2);
+    B.addElemento(2);
 
-    Conjunto A(conjuntoOriginal, tam2);
-    Conjunto B(conjuntoB, tam1);
 
+    cout << "Conjunto A: ";
     A.imprimirElementos();
+
+    cout << "Conjunto B: ";
     B.imprimirElementos();
 
-    Conjunto::operador_mais(conjuntoB, tam1, conjuntoOriginal, tam2);
-    Conjunto::operador_inter(conjuntoB, tam1, conjuntoOriginal, tam2);
+    Conjunto T(A);
+    cout << "Conjunto T: ";
+    T.imprimirElementos();
+
+    Conjunto C = A + B;
+    cout << "Uniao de A e B: ";
+    C.imprimirElementos();
+
+    Conjunto D = A * B;
+    cout << "Intersecao de A e B: ";
+    D.imprimirElementos();
 
     return 0;
 }
