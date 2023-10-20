@@ -11,6 +11,8 @@ class ItemSet{
         void inserirItem(string);
         void excluirItem(string);
         void imprimirItens();
+        bool operator==(ItemSet);
+        vector<string> getItens();
 };
 
 void ItemSet::inserirItem(string s){
@@ -64,5 +66,4 @@ int main(){
 
     cout<<endl;
     set.imprimirItens();
-
 }
