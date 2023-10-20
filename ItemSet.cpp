@@ -10,6 +10,7 @@ class ItemSet{
     public:
         void inserirItem(string);
         void excluirItem(string);
+        void imprimirItens();
 };
 
 void ItemSet::inserirItem(string s){
@@ -38,6 +39,13 @@ void ItemSet::excluirItem(string s){
     cout<<s<<" nao existe no conjunto de dados!"<<endl;
 }
 
+void ItemSet::imprimirItens(){
+    cout<<"####### ITENS #######"<<endl;
+    for(string item : itens){
+        cout<<item<<endl;
+    }
+}
+
 int main(){
     ItemSet set;
 
@@ -53,5 +61,8 @@ int main(){
 
     //Tentando remover item que não existe no conjunto
     set.excluirItem("bdc");
+
+    cout<<endl;
+    set.imprimirItens();
 
 }
