@@ -39,6 +39,23 @@ public:
         return intersecao;
     }
 
+    Conjunto operator<(const Conjunto& outro) const {
+        Conjunto diferenca;
+        for (const auto& elemento : elementos) {
+            if (outro.elementos.count(elemento) == 0) {
+                diferenca.elementos.insert(elemento);
+            }
+        }
+
+        for (const auto& elemento : outro.elementos) {
+            if (elementos.count(elemento) == 0) {
+                diferenca.elementos.insert(elemento);
+            }
+        }
+
+        return diferenca;
+    }
+
     void addElemento(int elemento) {
         elementos.insert(elemento);
     }
@@ -89,6 +106,29 @@ int main() {
     Conjunto D = A * B;
     cout << "Intersecao de A e B: ";
     D.imprimirElementos();
+
+    // O operador <> não é um operador válido em C++ então como alternativa usei o operador <
+    /*
+        Lista de Operadores que podem ser sobrecarregados
+ 
+        Operadores  Unários
+        +  -  *  &  ~  !  ++  --  ->  ->*
+
+        Operadores Binários
+        
+        +  -  *  /  %  ^  &  |  <<  >> 
+
+        += -= *= /= %= ^= &= |= <<= >>= 
+        
+        <  <=  >  >=  ==  !=  &&  || 
+        
+        ,  []  () 
+        
+        new  new[]  delete  delete[]
+    */
+    Conjunto E = A < B;
+    cout << "Diferenca de A e B: ";
+    E.imprimirElementos();
 
     return 0;
 }
